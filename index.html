@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" href="style.css">
+
+    <style>
+p.sg-thumbs {
+    text-align: center;
+}
+
+.sg-thumbs-img-container {
+    width: 170px;
+    display: inline-block;
+}
+
+.sg-thumbs-img-container img {
+    max-width: 100%;
+}
+
+.sg-display {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.sg-display:-webkit-full-screen {
+  width: 100%;
+  height: 100%;
+}
+
+.sg-display .fullscreenbutton {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
+
+.sg-display .fullscreenbutton p {
+    height: 60px;
+    line-height: 60px;
+    width: 60px;
+    text-align: center;
+    margin: 0;
+    font-weight: bold;
+    color: white;
+    font-size: 2em;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.sg-display .previous {
+    position: absolute;
+    top: 50%;
+    left: 0;
+}
+
+.sg-display .next {
+    position: absolute;
+    top: 50%;
+    right: 0;
+}
+    </style>
+</head>
+<body>
+
+    <p class="sg-thumbs">
+        <span class="sg-thumbs-img-container"><img src="01.png" /></span>
+        <span class="sg-thumbs-img-container"><img src="02.jpg" /></span>
+        <span class="sg-thumbs-img-container"><img src="03.jpg" /></span>
+        <span class="sg-thumbs-img-container"><img src="04.jpg" /></span>
+        <span class="sg-thumbs-img-container"><img src="05.jpg" /></span>
+        <span class="sg-thumbs-img-container"><img src="06.jpg" /></span>
+        <span class="sg-thumbs-img-container"><img src="07.png" /></span>
+        <span class="sg-thumbs-img-container"><img src="08.png" /></span>
+        <span class="sg-thumbs-img-container"><img src="09.jpg" /></span>
+    </p>
+
+    <div class="sg-display" style="display: none"> <!-- style="display: none"> -->
+        <span class="sg-img-container"><img src="" /></span>
+        <div class="fullscreenbutton previous" onclick="previous();"><p>&lt;</p></div>
+        <div class="fullscreenbutton next" onclick="next();"><p>&gt;</p></div>
+    </div>
+
+    <script language="javascript">
+        var imageList = [];
+        var imageIndex = 0;
+        var x = document.getElementsByClassName("sg-thumbs-img-container");
+        var i;
+        for (i = 0; i < x.length; i++) {
+			var container = x[i];
+			var img = container.getElementsByTagName('img')[0];
+			var index = i;
+			container.onclick = function(event) { onImageClicked(event.target) };
+            imageList.push(img.src);
+        }
+
+        console.log(imageList);
+
+        var sgDisplay = document.getElementsByClassName("sg-display")[0];
+        var sgDisplayImg = sgDisplay.getElementsByTagName("img")[0];
+
+        goTo(0);
+
+        document.onkeydown = onKeyDown;
+
+        function onKeyDown(e)
+        {
+            e = e || window.event;
+            if (e.keyCode == '37')
+                previous();
+            else if (e.keyCode == '39')
+                next();
+        }
+
+        function goTo(index)
+        {
+            imageIndex = Math.min(Math.max(0, index), imageList.length - 1);
+            sgDisplayImg.src = imageList[imageIndex];
+        }
+        function next() {
+            goTo (imageIndex + 1);
+        }
+
+        function previous() {
+            goTo (imageIndex - 1);
+        }
+
+		function onImageClicked(img) {
+            goTo(imageUrlToIndex(img.src));
+            goFullScreen();
+		}
+
+        function imageUrlToIndex(imageUrl) {
+            for (var i = 0; i < imageList.length; i++) {
+                if (imageList[i] == imageUrl)
+                return i;
+            }
+
+            return 0;
+        }
+		
+        function goFullScreen() {
+            sgDisplay.style = "";
+            if (sgDisplay.requestFullscreen) {
+                sgDisplay.requestFullscreen();
+            }
+            else if (sgDisplay.mozRequestFullScreen) {
+                sgDisplay.mozRequestFullScreen();
+            }
+            else if (sgDisplay.webkitRequestFullScreen) {
+                sgDisplay.webkitRequestFullScreen();
+            }
+            else if (sgDisplay.msRequestFullscreen) {
+                sgDisplay.msRequestFullscreen();
+            }
+        }
+        
+		function isDocumentInFullScreenMode() {
+		  return ((document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard methods  
+			  (!document.mozFullScreen && !document.webkitIsFullScreen && !document.msIsFullScreen));  // current working methods  
+		}
+		
+		function onFullscreenChanged() {
+            console.log(isDocumentInFullScreenMode());
+			if (isDocumentInFullScreenMode()) {
+				sgDisplay.style = "display: none;"
+			}
+		}
+		
+        document.addEventListener("mozfullscreenchange", function( event ) { onFullscreenChanged(); });
+        document.addEventListener("webkitfullscreenchange", function( event ) { onFullscreenChanged(); });
+        document.addEventListener("msfullscreenchange", function( event ) { onFullscreenChanged(); });
+        document.addEventListener("fullscreenchange", function( event ) { onFullscreenChanged(); });
+    </script>
+</body>
+</html>
