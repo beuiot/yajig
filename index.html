@@ -70,15 +70,15 @@ p.sg-thumbs {
 <body>
 
     <p class="sg-thumbs">
-        <span class="sg-thumbs-img-container"><img src="01.png" /></span>
-        <span class="sg-thumbs-img-container"><img src="02.jpg" /></span>
-        <span class="sg-thumbs-img-container"><img src="03.jpg" /></span>
-        <span class="sg-thumbs-img-container"><img src="04.jpg" /></span>
-        <span class="sg-thumbs-img-container"><img src="05.jpg" /></span>
-        <span class="sg-thumbs-img-container"><img src="06.jpg" /></span>
-        <span class="sg-thumbs-img-container"><img src="07.png" /></span>
-        <span class="sg-thumbs-img-container"><img src="08.png" /></span>
-        <span class="sg-thumbs-img-container"><img src="09.jpg" /></span>
+        <span class="sg-thumbs-img-container"><a href="images/01.png"><img src="images/thumbs/01.png" /></a></span>
+        <span class="sg-thumbs-img-container"><a href="images/02.jpg"><img src="images/thumbs/02.jpg" /></a></span>
+        <span class="sg-thumbs-img-container"><a href="images/03.jpg"><img src="images/thumbs/03.jpg" /></a></span>
+        <span class="sg-thumbs-img-container"><a href="images/04.jpg"><img src="images/thumbs/04.jpg" /></a></span>
+        <span class="sg-thumbs-img-container"><a href="images/05.jpg"><img src="images/thumbs/05.jpg" /></a></span>
+        <span class="sg-thumbs-img-container"><a href="images/06.jpg"><img src="images/thumbs/06.jpg" /></a></span>
+        <span class="sg-thumbs-img-container"><a href="images/07.png"><img src="images/thumbs/07.png" /></a></span>
+        <span class="sg-thumbs-img-container"><a href="images/08.png"><img src="images/thumbs/08.png" /></a></span>
+        <span class="sg-thumbs-img-container"><a href="images/09.jpg"><img src="images/thumbs/09.jpg" /></a></span>
     </p>
 
     <div class="sg-display" style="display: none"> <!-- style="display: none"> -->
@@ -89,18 +89,24 @@ p.sg-thumbs {
 
     <script language="javascript">
         var imageList = [];
+        var thumbsList = [];
         var imageIndex = 0;
         var x = document.getElementsByClassName("sg-thumbs-img-container");
         var i;
         for (i = 0; i < x.length; i++) {
 			var container = x[i];
 			var img = container.getElementsByTagName('img')[0];
+			var a = container.getElementsByTagName('a')[0];
+			imageList.push(a.href);
+			
+			a.href = "#";
 			var index = i;
-			container.onclick = function(event) { onImageClicked(event.target) };
-            imageList.push(img.src);
+			container.onclick = function(event) { onThumbClicked(event.target) };
+            thumbsList.push(img.src);
         }
 
-        console.log(imageList);
+        console.log("Image list: " + imageList);
+        console.log("Thumbs list: " + thumbsList);
 
         var sgDisplay = document.getElementsByClassName("sg-display")[0];
         var sgDisplayImg = sgDisplay.getElementsByTagName("img")[0];
@@ -131,14 +137,14 @@ p.sg-thumbs {
             goTo (imageIndex - 1);
         }
 
-		function onImageClicked(img) {
-            goTo(imageUrlToIndex(img.src));
+		function onThumbClicked(img) {
+            goTo(thumbUrlToIndex(img.src));
             goFullScreen();
 		}
 
-        function imageUrlToIndex(imageUrl) {
-            for (var i = 0; i < imageList.length; i++) {
-                if (imageList[i] == imageUrl)
+        function thumbUrlToIndex(thumbUrl) {
+            for (var i = 0; i < thumbsList.length; i++) {
+                if (thumbsList[i] == thumbUrl)
                 return i;
             }
 

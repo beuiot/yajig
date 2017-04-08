@@ -1,2 +1,8 @@
 # yajig
 Yet Another JavaScript Image Gallery
+
+## TODO
+
+ - Create proper sample set: actual thumbs, different aspect ratios
+ - Properly support different fullscreen aspect ratios
+ - Separate code in external JS with proper prefix
