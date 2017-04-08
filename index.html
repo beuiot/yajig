@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <head>
+    <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="stylesheet" href="yajig.css">
     <script type="text/javascript" src="yajig.js"></script>
@@ -16,14 +17,14 @@
         <span class="yajig-thumbs-img-container"><a href="images/06.jpg"><img src="images/thumbs/06.jpg" /></a></span>
     </p>
 
-    <div class="yajig-display" style="display: none"> <!-- style="display: none"> -->
-        <span class="yajig-img-container"><img src="" /></span>
+    <div class="yajig-display" style="display: none">
+        <div class="yajig-img-container"><img src="" /></div>
         <div class="fullscreenbutton previous" onclick="gallery.previous();"><p>&lt;</p></div>
         <div class="fullscreenbutton next" onclick="gallery.next();"><p>&gt;</p></div>
     </div>
 
     <script language="javascript">
-        var gallery = new YAJIG.Gallery();
+        var gallery = new YAJIG.Gallery({browserFullscreen: true});
     </script>
 </body>
 </html>

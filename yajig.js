@@ -2,11 +2,11 @@ var YAJIG = {
     Gallery: function (options) {
         "use strict";
 
-        var config = options || 
-            {
-                thumnailContainerClassName: "yajig-thumbs-img-container",
-                fullscreenContainerClassName: "yajig-display"
-            };
+        var config = options || { };
+
+        if (typeof(config.thumnailContainerClassName)==='undefined') config.thumnailContainerClassName = "yajig-thumbs-img-container";
+        if (typeof(config.fullscreenContainerClassName)==='undefined') config.fullscreenContainerClassName = "yajig-display";
+        if (typeof(config.browserFullscreen)==='undefined') config.browserFullscreen = true;
 
         var imageList = [];
         var thumbsList = [];
@@ -76,18 +76,25 @@ var YAJIG = {
 
         function goFullScreen() {
             fullscreenElement.style = "";
-            if (fullscreenElement.requestFullscreen) {
-                fullscreenElement.requestFullscreen();
+            if (options.browserFullscreen === true)
+            {
+                if (fullscreenElement.requestFullscreen) {
+                    fullscreenElement.requestFullscreen();
+                }
+                else if (fullscreenElement.mozRequestFullScreen) {
+                    fullscreenElement.mozRequestFullScreen();
+                }
+                else if (fullscreenElement.webkitRequestFullScreen) {
+                    fullscreenElement.webkitRequestFullScreen();
+                }
+                else if (fullscreenElement.msRequestFullscreen) {
+                    fullscreenElement.msRequestFullscreen();
+                }
             }
-            else if (fullscreenElement.mozRequestFullScreen) {
-                fullscreenElement.mozRequestFullScreen();
-            }
-            else if (fullscreenElement.webkitRequestFullScreen) {
-                fullscreenElement.webkitRequestFullScreen();
-            }
-            else if (fullscreenElement.msRequestFullscreen) {
-                fullscreenElement.msRequestFullscreen();
-            }
+        }
+
+        function exitFullScreen() {
+                fullscreenElement.style = "display: none;"
         }
 
         function isDocumentInFullScreenMode() {
@@ -97,7 +104,7 @@ var YAJIG = {
 
         function onFullscreenChanged() {
             if (isDocumentInFullScreenMode()) {
-                fullscreenElement.style = "display: none;"
+                exitFullScreen();
             }
         }
 
@@ -116,6 +123,12 @@ var YAJIG = {
             },
             previous: function() {
                 previous();
+            },
+            goFullScreen: function() {
+                goFullScreen();
+            },
+            exitFullScreen: function() {
+                exitFullScreen();
             }
         };
     }
